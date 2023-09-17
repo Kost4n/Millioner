@@ -13,6 +13,7 @@ class PlugActivity : AppCompatActivity() {
     private val arrayQuestions = mutableMapOf<String, String>()
     private val arrayButtons = mutableListOf<Button>()
     private val arrayAnswers = mutableListOf<String>()
+    private val arrayBtText = mutableListOf<String>()
     init {
         arrayQuestions["In which sport do the rules prohibit running?"] = "Sports walking"
         arrayQuestions["Motorcycle racing on a motorcycle track"] = "Speedway"
@@ -56,11 +57,18 @@ class PlugActivity : AppCompatActivity() {
         if (arrayAnswers.contains(randomQuestion.key))
             createAnswer()
         else {
+            arrayAnswers.add(randomQuestion.key)
             binding.textQuestion.text = randomQuestion.key
-            correctAnswer = randomQuestion.key
+            correctAnswer = randomQuestion.value
             val randomButton = arrayButtons[arrayButtons.indices.random()]
             randomButton.text = correctAnswer
+            if (correctAnswer.length > 10) {
+                randomButton.textSize = 14f
+            } else {
+                randomButton.textSize = 20f
+            }
             fillButtons(randomButton)
+            createPicture()
         }
     }
 
@@ -69,12 +77,39 @@ class PlugActivity : AppCompatActivity() {
             if (i != random) {
                 while (true) {
                     val rd = arrayQuestions.values.random()
-                    if (rd != correctAnswer) {
+                    if (rd != correctAnswer && !arrayBtText.contains(rd)) {
+                        if (rd.length > 10) {
+                            i.textSize = 14f
+                        } else {
+                            i.textSize = 20f
+                        }
                         i.text = rd
+                        arrayBtText.add(rd)
                         break
                     }
                 }
             }
+        }
+        arrayBtText.clear()
+    }
+
+    private fun createPicture() {
+        when (correctAnswer) {
+            "Sports walking" -> binding.imageQuestion.setImageResource(R.drawable.walking)
+            "Speedway" -> binding.imageQuestion.setImageResource(R.drawable.speedway)
+            "Synchronized swimming" -> binding.imageQuestion.setImageResource(R.drawable.swimming)
+            "Handball" -> binding.imageQuestion.setImageResource(R.drawable.handboll)
+            "Football" -> binding.imageQuestion.setImageResource(R.drawable.football)
+            "Gymnastic" -> binding.imageQuestion.setImageResource(R.drawable.gymnastic)
+            "Greco-Roman wrestling" -> binding.imageQuestion.setImageResource(R.drawable.wrestling)
+            "Bowling" -> binding.imageQuestion.setImageResource(R.drawable.bowling)
+            "Biathlon" -> binding.imageQuestion.setImageResource(R.drawable.biathlon)
+            "Basketball" -> binding.imageQuestion.setImageResource(R.drawable.basketball)
+            "Surfing" -> binding.imageQuestion.setImageResource(R.drawable.surfing)
+            "Fencing" -> binding.imageQuestion.setImageResource(R.drawable.fencing)
+            "Rugby" -> binding.imageQuestion.setImageResource(R.drawable.rugby)
+            "Hockey" -> binding.imageQuestion.setImageResource(R.drawable.hockey)
+            "Curling" -> binding.imageQuestion.setImageResource(R.drawable.curling)
         }
     }
 
@@ -87,5 +122,4 @@ class PlugActivity : AppCompatActivity() {
             Toast.makeText(this, "You answered incorrectly", Toast.LENGTH_LONG).show()
         }
     }
-
 }
